@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     ;
     function deletePerson() {
-        console.log(this.parentElement.remove());
+        this.parentElement.remove();
     }
     ;
 });
