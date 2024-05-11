@@ -1,35 +1,47 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   let contactsList = document.getElementById('contactsList') as HTMLUListElement;
-  let getPerson = document.getElementById('person') as HTMLInputElement;
+  let personName = document.getElementById('personName') as HTMLInputElement;
+  let personLastname = document.getElementById('personLastname') as HTMLInputElement;
+  let personPhone = document.getElementById('personPhone') as HTMLInputElement;
   let sendButton = document.getElementById('sendButton') as HTMLButtonElement;
 
   sendButton.addEventListener('click', handlePersonValue);
 
   function handlePersonValue(event: Event) {
     event.preventDefault();
-    let person = getPerson.value.trim();
+    let name = personName.value.trim();
+    let lastname = personLastname.value.trim();
+    let phone = personPhone.value.trim();
 
-    if(person.length >= 4) {
-      let deleteButton = document.createElement('button') as HTMLButtonElement;
-      let editButton = document.createElement('button') as HTMLButtonElement;
-      let li = document.createElement('li') as HTMLLIElement;
-      li.textContent = person;
+    let deleteButton = document.createElement('button') as HTMLButtonElement;
+    let editButton = document.createElement('button') as HTMLButtonElement;
+    let li = document.createElement('li') as HTMLLIElement;
+    li.textContent = name + ' ' + lastname + ' ' + phone;
 
-      deleteButton.textContent = 'Del';
-      editButton.textContent = 'Edit';
-      li.append(deleteButton);
-      li.append(editButton);
+    deleteButton.textContent = 'Del';
+    editButton.textContent = 'Edit';
+    li.appendChild(deleteButton);
+    li.appendChild(editButton);
 
-      deleteButton.addEventListener('click', deletePerson);
+    deleteButton.addEventListener('click', deletePerson);
+    editButton.addEventListener('click', editPerson);
 
-      contactsList.append(li);
-    }
-  };
+    contactsList.append(li);
 
-  function deletePerson() {
-    this.parentElement.remove();
+    personName.value = '';
+    personLastname.value = '';
+    personPhone.value = '';
   };
 });
+
+
+function deletePerson() {
+  this.parentElement.remove();
+};
+
+function editPerson() {
+  let personValue = this.parentElement.firstChild.textContent;;
+};
 
 
