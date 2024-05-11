@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
       deleteButton.addEventListener('click', deletePerson);
 
-
       contactsList.append(li);
     }
   };
@@ -31,27 +30,6 @@ document.addEventListener("DOMContentLoaded", function() {
   function deletePerson() {
     this.parentElement.remove();
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 });
 
 
