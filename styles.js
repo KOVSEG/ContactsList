@@ -43,11 +43,9 @@ function editPerson() {
     var formButton = document.createElement('button');
     formButton.textContent = 'Save';
     var arrFormValues = ['Имя', 'Фамилия', 'Телефон'];
-    var arrId = ['name', 'lastname', 'phone'];
     for (var i = 0; i < getPersonValues.length; i++) {
         var formInput = document.createElement('input');
         formInput.placeholder = arrFormValues[i];
-        formInput.setAttribute('id', arrId[i]);
         formWindow.appendChild(formInput);
     }
     formWindow.appendChild(formButton);
@@ -59,10 +57,9 @@ function editPerson() {
         var editForm = this.parentNode;
         for (var i = 0; i < editForm.length - 1; i++) {
             var inputEl = editForm[i];
-            newValue += inputEl.value;
-            console.log(inputEl.value);
+            newValue += inputEl.value + ' ';
         }
-        li.firstChild.textContent = newValue;
+        li.firstChild.textContent = newValue.trim();
         formWindow.remove();
     });
 }

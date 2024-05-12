@@ -47,6 +47,7 @@ function deletePerson() {
 
 
 function editPerson() {
+
   let personValue = this.parentElement.firstChild.textContent;
   let getPersonValues = personValue.split(' ');
   let formWindow = document.createElement('form') as HTMLFormElement;
@@ -54,12 +55,10 @@ function editPerson() {
   formButton.textContent = 'Save';
 
   let arrFormValues = ['Имя', 'Фамилия', 'Телефон'];
-  let arrId = ['name', 'lastname', 'phone'];
 
   for(let i = 0; i < getPersonValues.length; i++) {
     let formInput = document.createElement('input') as HTMLInputElement;
     formInput.placeholder = arrFormValues[i];
-    formInput.setAttribute('id', arrId[i]);
     formWindow.appendChild(formInput);
   }
 
@@ -74,10 +73,10 @@ function editPerson() {
 
     for(let i = 0; i < editForm.length - 1; i++) {
       let inputEl = editForm[i] as HTMLInputElement;
-      newValue += inputEl.value;
+      newValue += inputEl.value + ' ';
     }
 
-    li.firstChild.textContent = newValue;
+    li.firstChild.textContent = newValue.trim();
     formWindow.remove();
   });
 };
