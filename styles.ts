@@ -73,7 +73,6 @@ function editPerson() {
   });
 
   form.appendChild(formButton);
-  this.parentElement.appendChild(form);
 
   formButton.addEventListener('click', function(event: Event) {
     event.preventDefault();
