@@ -12,9 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
         var phone = personPhone.value.trim();
         var deleteButton = document.createElement('button');
         var editButton = document.createElement('button');
-        var li = makePersonContacts(name, lastname, phone);
         deleteButton.textContent = 'Del';
         editButton.textContent = 'Edit';
+        // let li = makePersonContacts(name, lastname, phone);
+        var li = makePersonContacts({ name: name, lastname: lastname, phone: phone });
+        function makePersonContacts(contact) {
+            var li = document.createElement('li');
+            li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+            return li;
+        }
+        ;
         li.appendChild(deleteButton);
         li.appendChild(editButton);
         contactsList.append(li);
@@ -26,41 +33,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     ;
 });
-function makePersonContacts(name, lastname, phone) {
-    var li = document.createElement('li');
-    li.textContent = name + ' ' + lastname + ' ' + phone;
-    return li;
-}
-;
 function deletePerson() {
     this.parentElement.remove();
 }
 ;
 function editPerson() {
-    var personValue = this.parentElement.firstChild.textContent;
-    var getPersonValues = personValue.split(' ');
-    var formWindow = document.createElement('form');
+    var personElement = this.parentElement;
+    var personValues = personElement.firstChild.textContent;
+    var getPersonValues = personValues.split(' ');
+    var form = document.createElement('form');
     var formButton = document.createElement('button');
     formButton.textContent = 'Save';
     var arrFormValues = ['Имя', 'Фамилия', 'Телефон'];
-    for (var i = 0; i < getPersonValues.length; i++) {
-        var formInput = document.createElement('input');
-        formInput.placeholder = arrFormValues[i];
-        formWindow.appendChild(formInput);
-    }
-    formWindow.appendChild(formButton);
-    this.parentElement.appendChild(formWindow);
-    var li = this.parentElement;
-    var newValue = '';
+    var inputs = [];
+    // for(let i = 0; i < getPersonValues.length; i++) {
+    //   let input = document.createElement('input') as HTMLInputElement;
+    //   input.placeholder = arrFormValues[i];
+    //   form.appendChild(input);
+    // }
+    arrFormValues.forEach(function (value, index) {
+        var input = document.createElement('input');
+        input.placeholder = value;
+        input.value = getPersonValues[index] || '';
+        form.appendChild(input);
+        inputs.push(input);
+    });
+    form.appendChild(formButton);
+    this.parentElement.appendChild(form);
+    // let li = this.parentElement;
+    // let newValue = '';
     formButton.addEventListener('click', function (event) {
         event.preventDefault();
-        var editForm = this.parentNode;
-        for (var i = 0; i < editForm.length - 1; i++) {
-            var inputEl = editForm[i];
-            newValue += inputEl.value + ' ';
-        }
-        li.firstChild.textContent = newValue.trim();
-        formWindow.remove();
+        // let editForm = this.parentNode as HTMLFormElement;
+        // for(let i = 0; i < editForm.length - 1; i++) {
+        //   let inputEl = editForm[i] as HTMLInputElement;
+        //   newValue += inputEl.value + ' ';
+        // }
+        var obj = {
+            name: inputs[0].value.trim(),
+            lastname: inputs[1].value.trim(),
+            phone: inputs[2].value.trim()
+        };
+        // personElement.firstChild.textContent = newValue.trim();
+        personElement.firstChild.textContent = obj.name + ' ' + obj.lastname + ' ' + obj.phone;
+        form.remove();
     });
+    personElement.appendChild(form);
 }
 ;

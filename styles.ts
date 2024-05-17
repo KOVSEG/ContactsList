@@ -1,3 +1,9 @@
+interface Contact {
+  name: string,
+  lastname: string,
+  phone: string
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 
   let contactsList = document.getElementById('contactsList') as HTMLUListElement;
@@ -17,10 +23,17 @@ document.addEventListener("DOMContentLoaded", function() {
     let deleteButton = document.createElement('button') as HTMLButtonElement;
     let editButton = document.createElement('button') as HTMLButtonElement;
 
-    let li = makePersonContacts(name, lastname, phone);
-
     deleteButton.textContent = 'Del';
     editButton.textContent = 'Edit';
+
+    let li = makePersonContacts({ name, lastname, phone });
+
+    function makePersonContacts(contact: Contact): HTMLLIElement {
+      let li = document.createElement('li') as HTMLLIElement;
+      li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+      return li;
+    };
+
     li.appendChild(deleteButton);
     li.appendChild(editButton);
 
@@ -35,48 +48,45 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 });
 
-function makePersonContacts(name: string, lastname: string, phone: string) {
-  let li = document.createElement('li') as HTMLLIElement;
-  li.textContent = name + ' ' + lastname + ' ' + phone;
-  return li;
-};
-
 function deletePerson() {
   this.parentElement.remove();
 };
 
-
 function editPerson() {
+  let personElement = this.parentElement;
+  let personValues = personElement.firstChild.textContent;
+  let getPersonValues = personValues.split(' ');
 
-  let personValue = this.parentElement.firstChild.textContent;
-  let getPersonValues = personValue.split(' ');
-  let formWindow = document.createElement('form') as HTMLFormElement;
+  let form = document.createElement('form') as HTMLFormElement;
   let formButton = document.createElement('button') as HTMLButtonElement;
   formButton.textContent = 'Save';
 
   let arrFormValues = ['Имя', 'Фамилия', 'Телефон'];
+  let inputs: HTMLInputElement[] = [];
 
-  for(let i = 0; i < getPersonValues.length; i++) {
-    let formInput = document.createElement('input') as HTMLInputElement;
-    formInput.placeholder = arrFormValues[i];
-    formWindow.appendChild(formInput);
-  }
+  arrFormValues.forEach((value, index) => {
+    let input = document.createElement('input') as HTMLInputElement;
+    input.placeholder = value;
+    input.value = getPersonValues[index] || '';
+    form.appendChild(input);
+    inputs.push(input);
+  });
 
-  formWindow.appendChild(formButton);
-  this.parentElement.appendChild(formWindow);
+  form.appendChild(formButton);
+  this.parentElement.appendChild(form);
 
-  let li = this.parentElement;
-  let newValue = '';
   formButton.addEventListener('click', function(event: Event) {
     event.preventDefault();
-    let editForm = this.parentNode as HTMLFormElement;
 
-    for(let i = 0; i < editForm.length - 1; i++) {
-      let inputEl = editForm[i] as HTMLInputElement;
-      newValue += inputEl.value + ' ';
+    let obj = {
+      name: inputs[0].value.trim(),
+      lastname: inputs[1].value.trim(),
+      phone: inputs[2].value.trim()
     }
 
-    li.firstChild.textContent = newValue.trim();
-    formWindow.remove();
+    personElement.firstChild.textContent = obj.name + ' ' + obj.lastname + ' ' + obj.phone;
+    form.remove();
   });
+
+  personElement.appendChild(form);
 };
