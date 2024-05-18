@@ -20,24 +20,40 @@ document.addEventListener("DOMContentLoaded", function() {
     let lastname = personLastname.value.trim();
     let phone = personPhone.value.trim();
 
+    let personContacts = new RegExp(/^[а-яА-Я]+$/);
+    let personContactPhone = new RegExp(/^[\+]?[0-9]{1}[(]?[0-9]{3}[)]?[-]?[0-9]{3}[-]?[0-9]{2}[-]?[0-9]{2}$/im);
+
     let deleteButton = document.createElement('button') as HTMLButtonElement;
     let editButton = document.createElement('button') as HTMLButtonElement;
-
     deleteButton.textContent = 'Del';
     editButton.textContent = 'Edit';
 
-    let li = makePersonContacts({ name, lastname, phone });
 
-    function makePersonContacts(contact: Contact): HTMLLIElement {
-      let li = document.createElement('li') as HTMLLIElement;
-      li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
-      return li;
-    };
+    if(name === '' && lastname === '' && phone === '') {
+      alert('невозможно добавить пустые строки');
+    } else {
+      if(!name.match(personContacts) && (name.length < 15 && name.length > 2)) {
+        alert('Имя должно содержать от 3 до 15 букв без посторонних символов');
+      } else if(!lastname.match(personContacts) && (lastname.length < 15 && lastname.length > 2)) {
+        alert('Фамилия должна содержать от 3 до 15 букв без посторонних символов');
+      } else if(!phone.match(personContactPhone)) {
+        alert('Поверьте правильность введеного номера телефона');
+      } else {
+        let li = makePersonContacts({ name, lastname, phone });
+  
+        function makePersonContacts(contact: Contact): HTMLLIElement {
+          let li = document.createElement('li') as HTMLLIElement;
+          li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+          return li;
+        };
+  
+        li.appendChild(deleteButton);
+        li.appendChild(editButton);
+  
+        contactsList.append(li);
+      }
+    }
 
-    li.appendChild(deleteButton);
-    li.appendChild(editButton);
-
-    contactsList.append(li);
 
     personName.value = '';
     personLastname.value = '';

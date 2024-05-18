@@ -10,20 +10,38 @@ document.addEventListener("DOMContentLoaded", function () {
         var name = personName.value.trim();
         var lastname = personLastname.value.trim();
         var phone = personPhone.value.trim();
+        var personContacts = new RegExp(/^[а-яА-Я]+$/);
+        var personContactPhone = new RegExp(/^[\+]?[0-9]{1}[(]?[0-9]{3}[)]?[-]?[0-9]{3}[-]?[0-9]{2}[-]?[0-9]{2}$/im);
         var deleteButton = document.createElement('button');
         var editButton = document.createElement('button');
         deleteButton.textContent = 'Del';
         editButton.textContent = 'Edit';
-        var li = makePersonContacts({ name: name, lastname: lastname, phone: phone });
-        function makePersonContacts(contact) {
-            var li = document.createElement('li');
-            li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
-            return li;
+        if (name === '' && lastname === '' && phone === '') {
+            alert('невозможно добавить пустые строки');
         }
-        ;
-        li.appendChild(deleteButton);
-        li.appendChild(editButton);
-        contactsList.append(li);
+        else {
+            if (!name.match(personContacts) && (name.length < 15 && name.length > 2)) {
+                alert('Имя должно содержать от 3 до 15 букв без посторонних символов');
+            }
+            else if (!lastname.match(personContacts) && (lastname.length < 15 && lastname.length > 2)) {
+                alert('Фамилия должна содержать от 3 до 15 букв без посторонних символов');
+            }
+            else if (!phone.match(personContactPhone)) {
+                alert('Поверьте правильность введеного номера телефона');
+            }
+            else {
+                var li = makePersonContacts({ name: name, lastname: lastname, phone: phone });
+                function makePersonContacts(contact) {
+                    var li = document.createElement('li');
+                    li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+                    return li;
+                }
+                ;
+                li.appendChild(deleteButton);
+                li.appendChild(editButton);
+                contactsList.append(li);
+            }
+        }
         personName.value = '';
         personLastname.value = '';
         personPhone.value = '';
