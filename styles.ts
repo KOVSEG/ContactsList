@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let lastname = personLastname.value.trim();
     let phone = personPhone.value.trim();
 
-    let personContacts = new RegExp(/^[а-яА-Я]+$/);
+    let personContacts = new RegExp(/^[а-яА-Яa-zA-Z]+$/);
     let personContactPhone = new RegExp(/^[\+]?[0-9]{1}[(]?[0-9]{3}[)]?[-]?[0-9]{3}[-]?[0-9]{2}[-]?[0-9]{2}$/im);
 
     let deleteButton = document.createElement('button') as HTMLButtonElement;
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     if(name === '' && lastname === '' && phone === '') {
-      alert('невозможно добавить пустые строки');
+      alert('Невозможно добавить пустые строки');
     } else {
       if(!name.match(personContacts) && (name.length < 15 && name.length > 2)) {
         alert('Имя должно содержать от 3 до 15 букв без посторонних символов');
@@ -39,14 +39,8 @@ document.addEventListener("DOMContentLoaded", function() {
       } else if(!phone.match(personContactPhone)) {
         alert('Поверьте правильность введеного номера телефона');
       } else {
-        let li = makePersonContacts({ name, lastname, phone });
-  
-        function makePersonContacts(contact: Contact): HTMLLIElement {
-          let li = document.createElement('li') as HTMLLIElement;
-          li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
-          return li;
-        };
-  
+
+        let li = makePersonContacts({ name, lastname, phone });  
         li.appendChild(deleteButton);
         li.appendChild(editButton);
   
@@ -63,6 +57,12 @@ document.addEventListener("DOMContentLoaded", function() {
     editButton.addEventListener('click', editPerson);
   };
 });
+
+function makePersonContacts(contact: Contact): HTMLLIElement {
+  let li = document.createElement('li') as HTMLLIElement;
+  li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+  return li;
+};
 
 function deletePerson() {
   this.parentElement.remove();

@@ -10,14 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
         var name = personName.value.trim();
         var lastname = personLastname.value.trim();
         var phone = personPhone.value.trim();
-        var personContacts = new RegExp(/^[а-яА-Я]+$/);
+        var personContacts = new RegExp(/^[а-яА-Яa-zA-Z]+$/);
         var personContactPhone = new RegExp(/^[\+]?[0-9]{1}[(]?[0-9]{3}[)]?[-]?[0-9]{3}[-]?[0-9]{2}[-]?[0-9]{2}$/im);
         var deleteButton = document.createElement('button');
         var editButton = document.createElement('button');
         deleteButton.textContent = 'Del';
         editButton.textContent = 'Edit';
         if (name === '' && lastname === '' && phone === '') {
-            alert('невозможно добавить пустые строки');
+            alert('Невозможно добавить пустые строки');
         }
         else {
             if (!name.match(personContacts) && (name.length < 15 && name.length > 2)) {
@@ -31,12 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             else {
                 var li = makePersonContacts({ name: name, lastname: lastname, phone: phone });
-                function makePersonContacts(contact) {
-                    var li = document.createElement('li');
-                    li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
-                    return li;
-                }
-                ;
                 li.appendChild(deleteButton);
                 li.appendChild(editButton);
                 contactsList.append(li);
@@ -50,6 +44,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     ;
 });
+function makePersonContacts(contact) {
+    var li = document.createElement('li');
+    li.textContent = contact.name + ' ' + contact.lastname + ' ' + contact.phone;
+    return li;
+}
+;
 function deletePerson() {
     this.parentElement.remove();
 }
